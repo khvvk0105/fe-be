@@ -5,7 +5,7 @@ const app = express();
 app.use(cors());
 var fs = require("fs");
 
-const { products, users, pro } = require("./dummy.json");
+const { users } = require("./dummy.json");
 app.use(bodyParser.json());
 // console.log(products);
 // console.log(users);
@@ -21,28 +21,28 @@ app.get("/users", (req, res) => {
 });
 
 app.post("/add-users", (req, res) => {
-  const usersList = req.body;
-  console.log(usersList);
-
-  fs.readFile("dummy.json", (error, data) => {
-    if (error) {
-      console.log("Error in reading file");
+  const addedUsers = req.body;
+  console.log(req.body);
+  fs.readFile("dummy.json", (err, data) => {
+    if (err) {
+      console.log(err);
     } else {
       const jsonFile = JSON.parse(data.toString());
-      jsonFile.users.push(usersList);
+      console.log(jsonFile);
+      jsonFile.users.push(addedUsers);
       fs.writeFile("dummy.json", JSON.stringify(jsonFile), (err) => {
         if (err) {
           console.log(err);
           res.send("error happened");
         } else {
           console.log("success");
-          res.send("User added successfully");
+          res.send("User added success");
         }
       });
     }
   });
-  res.status(200);
-  res.send("user added");
+  // res.status(200);
+  // res.send("User added successfully");
 });
 
 app.get("/usernames", (req, res) => {
